@@ -1,0 +1,54 @@
+     fdisk -l
+     fdisk /dev/xvdf
+     fdisk -l
+     mkfs
+     mkfs.ext4 /dev/xvdf1
+     mkdir -p /tmp/image-backup
+     mv /var/www/html/images/* /tmp/image-backup/
+     fdisk -l
+     mount /dev/xvdf1 /var/www/html/images
+     df -h
+     mount -a
+     mv /tmp/image-backup/* /var/www/html/images
+     umount  /var/www/html/images
+     df -h
+     vim /etc/fstab
+     df -h
+     mount -a
+     df -h
+
+     Identify and prepare the new volume
+
+fdisk -l - Lists all available disk devices to identify the new volume
+fdisk /dev/xvdf - Opens the fdisk utility to create a partition on the new volume (During this interactive process, you would typically press 'n' for new partition, select partition type, specify size, and then 'w' to write changes)
+fdisk -l - Verifies the new partition was created successfully
+Format the new partition
+
+mkfs - Shows available filesystem types (command by itself)
+mkfs.ext4 /dev/xvdf1 - Formats the new partition with the ext4 filesystem
+Backup existing data
+
+mkdir -p /tmp/image-backup - Creates a temporary directory for backup
+mv /var/www/html/images/* /tmp/image-backup/ - Moves existing images to backup location
+Mount and verify the new volume
+
+fdisk -l - Confirms the partition is ready
+mount /dev/xvdf1 /var/www/html/images - Mounts the new partition to the images directory
+df -h - Displays filesystem usage, confirming the mount
+Configure automatic mounting and restore data
+
+mount -a - Mounts all filesystems specified in /etc/fstab
+mv /tmp/image-backup/* /var/www/html/images - Restores backed-up images to the new volume
+umount /var/www/html/images - Unmounts the volume to test fstab configuration
+df -h - Verifies the unmount was successful
+vim /etc/fstab - Edits the filesystem table to add the new volume for persistent mounting (You would add a line like: /dev/xvdf1 /var/www/html/images ext4 defaults 0 2)
+mount -a - Tests the fstab configuration by mounting all filesystems
+df -h - Final verification that the volume is properly mounted
+This process allows you to:
+
+Add additional storage to your EC2 instance
+Format it with an appropriate filesystem
+Mount it to a specific directory
+Configure it to automatically mount after system reboots
+  
+
