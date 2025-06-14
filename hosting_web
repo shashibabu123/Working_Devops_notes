@@ -18,6 +18,29 @@ cp -r 2119_gymso_fitness/* /var/www/html/
 systemctl restart httpd
 
 
+For ec2 instance:
 
 docker pull shashikumar025/gymso-site:latest
 docker run -d -p 80:80 gymso-site
+
+
+Docker file
+
+# Use a lightweight Apache image
+FROM httpd:2.4
+
+# Remove default Apache files and copy site
+RUN rm -rf /usr/local/apache2/htdocs/*
+
+# Copy Gymso site content
+COPY site/ /usr/local/apache2/htdocs/
+
+# Expose port 80
+EXPOSE 80
+
+For building image:-
+docker build -t gymso-site .
+
+Run locally:-
+docker run -d -p 8080:80 --name gymso gymso-site
+
